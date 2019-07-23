@@ -1,0 +1,44 @@
+<ns-action-bar
+  [title]="isLogin ? 'Login' : 'Sign Up'"
+  [showBackButton]="false"
+  [hasMenu]="false">
+</ns-action-bar>
+<StackLayout>
+    <FlexboxLayout class="form" [formGroup]="form">
+        <StackLayout class="input-field">
+          <Label class="label" text="Email" [ngClass]="{invalid: !emailCtrlIsValid}"></Label>
+          <TextField 
+          class="input" 
+          returnKeyType="next" 
+          keyboardType="email" 
+          [autocorrect]="false" 
+          autocapitalization="none"
+          formControlName="email"
+          #emailEl></TextField>
+          <Label *ngIf="!emailCtrlIsValid" text="Please enter a valid email"></Label>
+        </StackLayout>
+        <StackLayout class="input-field">
+          <Label class="label" text="Password" [ngClass]="{invalid: !passwordCtrlIsValid}"></Label>
+          <TextField class="input" 
+          returnKeyType="done"
+          [autocorrect]="false" 
+          autocapitalization="none" 
+          [secure]="true"
+          formControlName="password"
+          (returnPress)="onDone()"
+          #passwordEl>
+        </TextField>
+          <Label *ngIf="!passwordCtrlIsValid" text="Password must be at least 6 characters">
+          </Label>
+        </StackLayout>
+      </FlexboxLayout>
+  <Button class="btn btn-flat" text="Switch" (tap)="onSwitch()"></Button>
+  <Button
+    *ngIf="!isLoading"
+    [text]="isLogin ? 'Log In' : 'Sign Up'"
+    class="btn btn-primary btn-rounded-lg"
+    (tap)="onSubmit()"
+    [isEnabled]="!form.valid"
+  ></Button>
+  <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</StackLayout>

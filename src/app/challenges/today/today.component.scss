@@ -1,0 +1,25 @@
+/* Add mobile styles for the component here.  */
+@import '~nativescript-theme-core/scss/light';
+@import '../../../theme/colors';
+
+.page {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    width: 80%;
+}
+
+.btn-success {
+    background-color: $success;
+    border-color: $success;
+    color: $white;
+}
+
+.btn-fail {
+    background-color: $fail;
+    border-color: $fail;
+    color: $white;
+}

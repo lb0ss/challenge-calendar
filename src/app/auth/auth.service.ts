@@ -40,8 +40,9 @@ export class AuthService {
         ).pipe(
             catchError(error => {
             this.handleError(error.error.error.message);
-            return throwError(error);
+            return throwError(error);   // must return here to ensure the function is still subscribable
         }),
+          // taps into the response
           tap(res => {
               if (res && res.idToken) {
                 this.handleLogin(email, res.idToken, res.localId, parseInt(res.expiresIn));
@@ -68,7 +69,8 @@ export class AuthService {
     logout() {
         this._user.next(null);
         remove('userData');     // removes the User object in 'userData
-        // if the token DID expire
+        // check if timer for autoLogout is set
+        // if so, reset timer
         if (this.tokenExpirationTimer) {
             clearTimeout(this.tokenExpirationTimer);
         }
@@ -85,7 +87,7 @@ export class AuthService {
             id: string, 
             _token: string, 
             _tokenExpirationDate: string
-        } = JSON.parse(getString('userData'));
+        } = JSON.parse(getString('userData'));  // convets JSOn back to object
 
         // construct a new User object
         const loadedUser = new User(

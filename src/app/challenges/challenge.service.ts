@@ -33,7 +33,7 @@ export class ChallengeService implements OnDestroy{
     fetchCurrentChallenge() {
         return this.authService.user.pipe(
             take(1),    // only get the latest value and unsub automatically
-            switchMap(currentUser => {  // use switchMap to chain 2 observables and get the currentUser (of type User) object
+            switchMap(currentUser => {  // switchMap takes the value of the previous observable and maps the value into the next observable
                 if (!currentUser || !currentUser.isAuth) {  // extra check to ensure no data is posted when user is not present or is not authenticated
                     return of(null);
                 }

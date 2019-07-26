@@ -6,17 +6,17 @@ export class User {
         private _tokenExpirationDate: Date) {
     }
     get token() {
-        // check if token is provided
+        // check if a token exists
         if (!this._token) {
             return null;
         }
-        // if token is provided, 
+        // if a token exists,
         // check if token has expired or a expiration date exists
         if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
             return null;
         }
 
-        // if a token is provided OR an existing token 
+        // if a token exists and it
         // hasn't expired, return the token
         return this._token;
     }

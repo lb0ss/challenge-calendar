@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -15,7 +15,8 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
         }]),
         NativeScriptFormsModule, 
         ReactiveFormsModule
-    ]
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class AuthModule {
 

@@ -44,21 +44,21 @@ export class ChallengeService implements OnDestroy{
                     year: number, 
                     _days: Day[]
                 }>(`https://ns-challenge-calendar.firebaseio.com/challenge/${currentUser.id}.json?auth=${currentUser.token}`) // retrieve the token and append it to post request
-            })).pipe(
+            }),
                 // extract data
-                    tap(res => {
-                        if (res) {
-                            const loadedChallenge = new Challenge(
-                                res.title, 
-                                res.desc, 
-                                res.year, 
-                                res.month, 
-                                res._days
-                                );
-                                this._currentChallenge.next(loadedChallenge);    
-                        };
-         
-            }));
+            tap(res => {
+                if (res) {
+                    const loadedChallenge = new Challenge(
+                        res.title, 
+                        res.desc, 
+                        res.year, 
+                        res.month, 
+                        res._days
+                        );
+                        this._currentChallenge.next(loadedChallenge);    
+                }
+            })
+        );
     }
 
     createNewChallenge(title: string, desc: string) {
@@ -83,13 +83,13 @@ export class ChallengeService implements OnDestroy{
 
     updateDayStatus(dayInMonth: number, dayStatus: DayStatus) {
         this._currentChallenge.pipe(take(1)).subscribe(challenge => {   // this will then unsubscribe automatically
-            if (!challenge || challenge.days.length < dayInMonth) {
+            if (!challenge || challenge.days.length < dayInMonth) {     // return if challenge does not exist or if the dayInMonth is larger than the total days of the month
                 return;
             }
             const dayIndex = challenge.days.findIndex(d => d.dayInMonth === dayInMonth);
             challenge.days[dayIndex].status = dayStatus;
             this._currentChallenge.next(challenge);
-            console.log('dayIndex is: ' + JSON.stringify(challenge.days[dayIndex]));
+            console.log('the date changed is: ' + JSON.stringify(challenge.days[dayIndex]));
             this.saveToServer(challenge);
         }) 
     }

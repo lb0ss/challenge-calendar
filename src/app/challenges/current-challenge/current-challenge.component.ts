@@ -25,14 +25,19 @@ export class CurrentChallengeComponent implements OnInit, OnDestroy {
     private modalDialog: ModalDialogService,
     private vcRef: ViewContainerRef,
     private uiService: UIService,
-    private challengeSerivce: ChallengeService
+    private challengeService: ChallengeService
   ) {}
 
   ngOnInit() {
-    this.curChallengeSub = this.challengeSerivce.currentChallenge.subscribe(challenge => {
-      this.currentChallenge = challenge;
-      console.log("current challenge: " + JSON.stringify(this.currentChallenge));
-    });
+    this.curChallengeSub = this.challengeService.currentChallenge.subscribe(
+      challenge => {
+        this.currentChallenge = challenge;
+      }
+    );
+  }
+
+  getIsSettable(dayInMonth: number) {
+    return dayInMonth <= new Date().getDate();
   }
 
   getRow(index: number, day: { dayInMonth: number; dayInWeek: number }) {
@@ -58,20 +63,14 @@ export class CurrentChallengeComponent implements OnInit, OnDestroy {
         viewContainerRef: this.uiService.getRootVCRef()
           ? this.uiService.getRootVCRef()
           : this.vcRef,
-        context: { date: day.date , status: day.status }
+        context: { date: day.date, status: day.status }
       })
       .then((status: DayStatus) => {
-        // in current-challenge, if 'cancel' is clicked, the chosen
-        // status will not be updated
         if (status === DayStatus.Open) {
           return;
         }
-        this.challengeSerivce.updateDayStatus(day.dayInMonth, status);
+        this.challengeService.updateDayStatus(day.dayInMonth, status);
       });
-  }
-
-  getIsSettable(dayInMonth: number) {
-    return dayInMonth <= new Date().getDate();
   }
 
   ngOnDestroy() {
